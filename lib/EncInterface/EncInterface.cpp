@@ -14,8 +14,10 @@ long EncInterface::postion() {
 }
 
 long EncInterface::speed() {
-  long init_tick = encoder.getCount();
-  delay(100);
-  long delta = encoder.getCount() - init_tick;
-  return delta;
+  long d_tick = encoder.getCount() - last_tick;
+  long d_time = millis() - last_time;
+  float tps = d_tick / (d_time * 0.001);
+  last_tick = encoder.getCount();
+  last_time = millis();
+  return tps;
 }
